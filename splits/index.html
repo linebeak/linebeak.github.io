@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linebeak Splits</title>
+<meta name="description" content="Linebeak Splits. The weird part of Linebeak." />
+	
+<meta name="viewport" content="width=device-width">
+<meta charset="utf-8"/>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<style>
+    
+    body {
+        background-color: #dddddd;
+        font-family: monospace;
+        text-align: center;
+		min-width: 800px;
+    }
+
+    .blueColour   {color: #85C1F5;}
+    .greyColour   {color: #999999;}
+    .orangeColour {color: #F7A308;}
+    .greenColour  {color: #E4EC04;}
+    .whiteColour  {color: #FFFFFF;}
+    
+    textarea {
+        width: 500px;
+        height: 160px;
+        background-color: white;
+		font-family: monospace;
+        color: black;
+        padding: 10px;
+        border: 1px solid black;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        box-shadow: 2px 2px #999999;
+		box-sizing: border-box;
+		resize: none;
+    }
+    
+    .snaptextarea {
+        height: 240px;
+        width: 200px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    
+    .lbl {
+        height: 40px;
+        width: 198px;
+        display: inline-block;
+        border: none;
+        margin-top: 3px;
+        border: 1px solid black;
+        box-shadow: 2px 2px #999999;
+        margin-bottom: 3px;
+        background-color: white;
+    }
+    
+    button {
+        margin: 5px;
+        height: 40px;
+        width: 155px;
+        font-family: sans-serif;
+        color: black;
+        background-color: #85C1F5;
+        border: 1px solid black;
+        border-radius: 0px;
+        box-shadow: 2px 2px #999999;
+    }
+    a {
+        color: #F7A308;
+        text-decoration: none;
+    }
+    a:hover {
+        color: white;
+        text-decoration: none;
+    }
+	
+	.roundtextarea {
+		font-family: monospace;
+		line-height: 60px;
+		height: 80px;
+		width: 80px;
+		border: 1px solid black;
+		border-radius: 50px;
+		text-align: center;
+		overflow: hidden;
+		margin: 10px;
+	}
+
+    h1 {
+        font-family: Righteous;
+        color: white;
+        font-size: 490%;
+        margin: 0px;
+        padding: 0px;
+        padding-top: 5px;
+    }
+	
+	#sts {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		margin: 5px;
+		background-color: navy;
+		border: 1px solid black;
+		border-radius: 5px;
+		width: 200px;
+	}
+	
+	#sts:hover {
+    	background-image: linear-gradient(to right, red, blue);
+	}
+	
+	#notes {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		margin: 5px;
+		background-color: #1D1F21;
+		color: white;
+		border: 1px solid #464A4E;
+		border-radius: 5px;
+		box-shadow: none;
+		width: 44px;
+		height: 44px;
+		resize: none;
+	}
+	
+	@media only screen and (max-width: 875px) {
+		#sts {
+			display: none;
+		}
+	}
+
+</style>
+    
+</head>
+
+<body>
+    
+<div style = "background-color: #1D1F21; padding-bottom: 3px;">
+<h1>Line<span class = 'greenColour'>beak</span></h1><p class = 'greyColour' style = 'margin-top: 0px;'>Your words. My sticky beak. Glorious text.</p><p class = "blueColour">
+<a href = "/">Home</a> | <a href = "/snaps/">Snaps</a>
+</p><textarea id="notes" title="Use this area if you want to make some notes. Right-click to change colour." spellcheck="false" onfocus="setUpNotes()" oncontextmenu="changeNotesColour(event)" onfocusout="leaveNotes()"></textarea>
+</div>
+<script>
+	var alreadySetUp = false;
+	var noteColours = ['#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#ffadad', '#ffd6a5'];
+	var noteColour = 0;
+
+	function setUpNotes() {
+		if (alreadySetUp == true) return;
+		alreadySetUp = true;
+		
+		document.getElementById("notes").style.height = '75px';
+		document.getElementById("notes").style.width = '200px';
+		
+		document.getElementById("notes").style.color = 'black';
+		document.getElementById("notes").style.backgroundColor = noteColours[noteColour];
+		document.getElementById("notes").focus();
+	}
+
+	function changeNotesColour(evt) {
+		evt.preventDefault();
+		alreadySetUp = true;
+		
+		noteColour++;
+		if (noteColour >= noteColours.length) noteColour = 0;
+		
+		document.getElementById("notes").style.height = '75px';
+		document.getElementById("notes").style.width = '200px';
+		
+		document.getElementById("notes").style.color = 'black';
+		document.getElementById("notes").style.backgroundColor = noteColours[noteColour];
+	}
+	
+ 	function leaveNotes() {
+		if (document.getElementById("notes").value == "") {
+			alreadySetUp = false;
+			
+			document.getElementById("notes").style.height = '44px';
+			document.getElementById("notes").style.width = '44px';
+			
+			document.getElementById("notes").style.color = 'white';
+			document.getElementById("notes").style.backgroundColor = "#1D1F21";
+			
+			//noteColour = 0;
+		}
+	}
+</script>	
+<br>
+<button style = "background-color: #00325B; color: white;" onClick = "addSlashes()">Add /*</button>
+<button style = "background-color: #00325B; color: white;" onClick = "removeSlashes()">Remove /*</button>
+<button style = "background-color: #00325B; color: white;" onClick = "removeDashes()">Remove -*</button><br>
+<button style = "background-color: #00325B; color: white;" onClick = "addStarToStart()">Add * to Start</button>
+<button style = "background-color: #00325B; color: white;" onClick = "addStarToEnd()">Add * to End</button>
+<button style = "background-color: #00325B; color: white;" onClick = "addFirstToStart()">1st to Start</button><br>
+	
+<textarea id = "inTextarea" spellcheck="false" autofocus></textarea><br><br>
+	
+<button style = "background-color: #00325B; color: white;" onClick = "makeOutput(400)">400 Bars</button>
+<button style = "background-color: #00325B; color: white;" onClick = "makeOutput(350)">350 Bars</button>
+<button style = "background-color: #00325B; color: white;" onClick = "makeOutput(1000)">1000 Quotes</button><br>
+<button style = "background-color: #00325B; color: white;" onClick = "makeBoxes(400)">400 in Boxes</button>
+<button style = "background-color: #00325B; color: white;" onClick = "makeBoxes(350)">350 in Boxes</button>
+<button style = "background-color: #00325B; color: white;" onClick = "oracleMagic()">Oracle Magic</button><br>
+<button style = "background-color: #00325B; color: white;" onClick = "findDuplicates()">Find Duplicates</button>
+<button style = "background-color: #00325B; color: white;" onClick = "showExample()">Show Example</button>
+<button style = "background-color: maroon; color: white;" onClick = "clearInput()">Clear Entry</button><br>
+
+<div id = "lower">
+<textarea id = "outTextarea">If you're not sure what this is for, press the 'Show Example' button.</textarea>
+</div>
+
+<script>
+
+	function clearInput() {
+		document.getElementById('inTextarea').value = "";
+		document.getElementById('inTextarea').focus();
+	}
+
+	function showExample() {
+		document.getElementById("lower").innerHTML = "<textarea id = \"outTextarea\"></textarea>";
+		str = "";
+
+		for (i = 1; i <= 6100; i++) {
+			str += i;
+			if (i < 6100) str += "\n";
+		}
+
+		document.getElementById('inTextarea').value = str;
+		document.getElementById('outTextarea').value = "There are 6100 values in the input area.\n\nNow try the other buttons to see how this works.";
+		document.getElementById('inTextarea').focus();
+	}
+	
+	function removeSlashes () {
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 0) str += "\n";
+
+			inTextLines[i] = inTextLines[i].replace(new RegExp('\/(.*)','g'), '')
+
+			str += inTextLines[i];
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function removeDashes () {
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 0) str += "\n";
+
+			inTextLines[i] = inTextLines[i].replace(new RegExp('\-(.*)','g'), '')
+
+			str += inTextLines[i];
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function addSlashes () {
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 0) str += "\n";
+
+			inTextLines[i] = inTextLines[i].replace(new RegExp('\/(.*)','g'), '')
+
+			str += inTextLines[i];
+			str += "/\u00B7*";
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function addStarToStart () {
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 0) str += "\n";
+
+			inTextLines[i] = inTextLines[i].trim();
+
+			str += "\u00B7*";
+			str += inTextLines[i];
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function addStarToEnd () {
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 0) str += "\n";
+
+			inTextLines[i] = inTextLines[i].trim();
+
+			str += inTextLines[i];
+			str += "\u00B7*";
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function addFirstToStart () {
+		var first = "";
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+
+		for (i = 0; i < inTextLines.length; i++) {
+			if (i > 1) str += "\n";
+
+			inTextLines[i] = inTextLines[i].trim();
+
+			if (i > 0) {
+				str += first;
+				str += inTextLines[i];
+			}
+			
+			if (i == 0) first = inTextLines[i];
+		}
+
+		inTextarea.value = str;
+		document.getElementById("inTextarea").select();
+
+	}
+	
+	function makeOutput (amnt) {
+		document.getElementById("lower").innerHTML = "<textarea id = \"outTextarea\"></textarea>";
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "";
+		var i = 0;
+		var ic = 0;
+
+		var a = "";
+		var b = "\u00B7|";
+		var c = "";
+
+		if (amnt == 500 || amnt == 1000) {
+			a = "'";
+			b = ", ";
+			c = "'";
+		}
+
+		while (1 == 1) {
+			i++;
+			if (i > inTextLines.length) {
+				break;
+			}
+
+			inTextLines[i - 1] = inTextLines[i - 1].trim();
+			if (inTextLines[i - 1] == "") continue;
+
+			ic++;
+
+			if (ic > 1 && (ic - 1) % amnt > 0 && i <= inTextLines.length) {
+				str += b;
+			}
+
+			if (ic > 1 && (ic - 1) % amnt == 0 && i <= inTextLines.length) {
+				str += "\n\n\n\n\n";
+			}
+
+			str += a;
+			str += inTextLines[i - 1];
+			str += c;
+		}
+
+		outTextarea.value = str;
+		document.getElementById("outTextarea").select();
+	}
+	
+	function makeBoxes(amnt) {
+
+		document.getElementById("lower").innerHTML = "";
+
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var colours = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff", "#ffd1dc"];
+		var colourCycle = 0;
+		var str = "<p>" + amnt + " Box "+ (colourCycle+1) +"</p><textarea onclick=\"this.focus();this.select()\" style = \"height: 100px; background-color: "+ colours[colourCycle % colours.length] +"; margin-top: 0px; margin-bottom: 0px;\">";
+		var i = 0;
+		var ic = 0;
+
+		var a = "";
+		var b = "\u00B7|";
+		var c = "";
+
+		while (1 == 1) {
+			i++;
+			if (i > inTextLines.length) {
+                str += "</textarea>";
+                
+                str += "<p>(contains ";
+                str += ((i - 1) % amnt);
+                str += ")";
+
+                break;
+			}
+
+			inTextLines[i - 1] = inTextLines[i - 1].trim();
+			if (inTextLines[i - 1] == "") {
+                inTextLines.splice(i - 1, 1);
+                i--;
+                continue;
+            }
+
+			ic++;
+
+			if (ic > 1 && (ic - 1) % amnt > 0 && i <= inTextLines.length) {
+				str += b;
+			}
+
+			if (ic > 1 && (ic - 1) % amnt == 0 && i <= inTextLines.length) {
+				colourCycle ++;
+				str += "</textarea><br><br><p>" + amnt + " Box "+ (colourCycle+1) +"</p><textarea onclick=\"this.focus();this.select()\" style = \"height: 100px; background-color: "+ colours[colourCycle % colours.length] +"; margin-top: 0px; margin-bottom: 0px;\">";
+			}
+
+			str += a;
+			str += inTextLines[i - 1];
+			str += c;
+		}
+
+		document.getElementById("lower").innerHTML = str;
+
+	}
+	
+	function oracleMagic () {
+		document.getElementById("lower").innerHTML = "<textarea id = \"outTextarea\"></textarea>";
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var str = "AND ('A', field_code) IN (\n";
+		var i = 0;
+		var ic = 0;
+
+		var a = " ('A', '";
+		var b = ",\n";
+		var c = "')";
+
+		while (1 == 1) {
+			i++;
+			if (i > inTextLines.length) {
+				break;
+			}
+
+			inTextLines[i - 1] = inTextLines[i - 1].trim();
+			if (inTextLines[i - 1] == "") continue;
+
+			ic++;
+
+			if (ic > 1 && i <= inTextLines.length) {
+				str += b;
+			}
+
+			str += a;
+			str += inTextLines[i - 1];
+			str += c;
+		}
+
+		str += "\n)";
+
+		outTextarea.value = str;
+		document.getElementById("outTextarea").select();
+	}
+	
+	function findDuplicates () {
+		document.getElementById("lower").innerHTML = "<textarea id = \"outTextarea\"></textarea>";
+		var inText = document.getElementById("inTextarea").value;
+		var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+		var secondList = [];
+		var thirdList  = [];
+
+		var str = "No duplicates found."
+
+		for (i = 0; i < inTextLines.length; i++) {
+			
+			inTextLines[i] = inTextLines[i].trim();
+			
+			if (inTextLines[i].length == 0) continue;
+
+			if (secondList.indexOf(inTextLines[i]) > -1 && thirdList.indexOf(inTextLines[i]) == -1) {
+				thirdList.push(inTextLines[i]);
+			}
+			
+			secondList.push(inTextLines[i]);
+		}
+
+		if (thirdList.length > 0) {
+			str = "";
+			for (i = 0; i < thirdList.length; i++) {
+				if (i > 0) str += "\n";
+				str += thirdList[i];
+			}
+		}
+
+		outTextarea.value = str;
+		document.getElementById("outTextarea").select();
+		
+	}
+	
+</script>
+	
+<div style = "text-align: right; margin-right: 10px;">
+<a href = "/splits/" style = "color: gray;">&#960;</a>
+</div>
+    
+</body>
+</html>
