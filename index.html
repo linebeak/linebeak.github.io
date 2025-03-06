@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -26,10 +25,14 @@
         font-family: monospace;
         text-align: center;
 		min-width: 800px;
+		overflow-y: scroll;
     }
 
     .blueColour   {color: #85C1F5;}
-    .greyColour   {color: #999999;}
+    .greyColour   {
+		font-family: Righteous;
+		color: #999999;
+	}
     .orangeColour {color: #F7A308;}
     .greenColour  {color: #E4EC04;}
     .whiteColour  {color: #FFFFFF;}
@@ -145,15 +148,88 @@
 		}
 	}
 
+	.navbtn {
+		color: lightGray;
+		background-color: #222222;
+		border: 1px solid gray;
+		width: 80px;
+		border-radius: 10px;
+		box-shadow: none;
+	}
+
 </style>
 
 </head>
 
 <body>
-    
+<script>
+	var currentPg = 0;
+
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'ScrollLock') {
+			if (currentPg == 1) {
+				findSnaps(1);
+			} else if (currentPg == 0) {
+				document.getElementById("standard").style.display = "block";
+				document.getElementById("fancy").style.display = "none";
+
+				var inText = document.getElementById("textInputArea").value;
+				var inTextLines = inText.replace(/\r\n/g,"\n").split("\n");
+
+				var str = "AND ('A', field_code) IN (\n";
+				var i = 0;
+				var ic = 0;
+
+				var a = " ('A', '";
+				var b = ",\n";
+				var c = "')";
+
+				while (1 == 1) {
+					i++;
+					if (i > inTextLines.length) {
+						break;
+					}
+
+					inTextLines[i - 1] = inTextLines[i - 1].trim();
+					if (inTextLines[i - 1] == "") continue;
+
+					ic++;
+
+					if (ic > 1 && i <= inTextLines.length) {
+						str += b;
+					}
+
+					str += a;
+					str += inTextLines[i - 1];
+					str += c;
+				}
+
+				str += "\n)";
+
+				textOutputArea.value = str;
+				document.getElementById("textOutputArea").select();
+
+			}
+		}
+	});
+
+	function showBeak() {
+		currentPg = 0;
+		document.getElementById('pageBeak').style.display='block';
+		document.getElementById('pageSnaps').style.display='none';
+		document.getElementById('textInputArea').focus();
+	}
+
+	function showSnap() {
+		currentPg = 1;
+		document.getElementById('pageBeak').style.display='none';
+		document.getElementById('pageSnaps').style.display='block';
+		document.getElementById('leftInputArea').focus();
+	}
+</script>
 <div style = "background-color: #1D1F21; padding-bottom: 3px;">
 <h1>Line<span class = 'greenColour'>beak</span></h1><p class = 'greyColour' style = 'margin-top: 0px;'>Your words. My sticky beak. Glorious text.</p><p class = "blueColour">
-<a href = "/">Home</a> | <a href = "/snaps/">Snaps</a>
+<button class = "navbtn" onClick="showBeak()">Beak</button><button class = "navbtn" onClick="showSnap()">Snaps</button>
 </p><textarea id="notes" title="Use this area if you want to make some notes. Right-click to change colour." spellcheck="false" onfocus="setUpNotes()" oncontextmenu="changeNotesColour(event)" onfocusout="leaveNotes()"></textarea>
 </div>
 <script>
@@ -200,7 +276,9 @@
 			//noteColour = 0;
 		}
 	}
-</script>	
+</script>
+
+<div id = "pageBeak">
 <textarea id = "textInputArea" spellcheck="false" style = "height: 135px;" autofocus></textarea>
 <br>
     <button onclick="changeListToOrSeparated(textOutputArea)">
@@ -562,10 +640,103 @@ function howMany () {
 }
 
 </script>
-	
-<div style = "text-align: right; margin-right: 10px;">
-<a href = "/splits/" style = "color: gray;">&#960;</a>
 </div>
-    
+
+<div id = "pageSnaps" style = "display: none;">
+	<div class = "lbl" style = "margin-top: 20px; background-color: #FFB6C1;"><p>List 1</p></div>
+	<div class = "lbl" style = "margin-top: 20px; background-color: #85C1F5;"><p>List 2</p></div>
+	<br>
+	<textarea class = "snaptextarea" id = "leftInputArea" spellcheck="false"></textarea>
+	<textarea class = "snaptextarea" id = "rightInputArea" spellcheck="false"></textarea>
+		
+	<br><br>
+	
+	<button onclick="findSnaps(0)">Find Snaps</button><button style = "background-color: #FFB6C1;" onclick="clearInputs()">Clear</button>
+	
+	<br><br>
+	<div class = "lbl" style = "background-color: #FFB6C1;"><p>Unique to 1</p></div>
+	<div class = "lbl" style = "background-color: #DDA0DD;"><p>Shared</p></div>
+	<div class = "lbl" style = "background-color: #85C1F5;"><p>Unique to 2</p></div>
+	<br>
+	<textarea class = "snaptextarea" id = "leftOutputArea" spellcheck="false" onclick="this.focus();this.select();"></textarea>
+	<textarea class = "snaptextarea" id = "middleOutputArea" spellcheck="false" onclick="this.focus();this.select();"></textarea>
+	<textarea class = "snaptextarea" id = "rightOutputArea" spellcheck="false" onclick="this.focus();this.select();"></textarea>
+	<br>
+	<div class = "lbl" style = "background-color: #FFB6C1;"><p id = "statLeft">-</p></div>
+	<div class = "lbl" style = "background-color: #DDA0DD;"><p id = "statMiddle">-</p></div>
+	<div class = "lbl" style = "background-color: #85C1F5;"><p id = "statRight">-</p></div>
+		
+	<script>
+		
+	function clearInputs() {
+		document.getElementById("leftInputArea").value = "";
+		document.getElementById("rightInputArea").value = "";
+		document.getElementById('leftInputArea').focus();
+	}
+		
+	function findSnaps(snapType) {
+		var leftBox = document.getElementById("leftInputArea").value.replace(/\r\n/g,"\n").split("\n");
+		var rightBox = document.getElementById("rightInputArea").value.replace(/\r\n/g,"\n").split("\n");
+		
+		var leftArray = [];
+		var middleArray = [];
+		var rightArray = [];
+		
+		for (var i = 0; i < leftBox.length; i++) {
+			leftBox[i] = leftBox[i].trim();
+			if (snapType == 1) leftBox[i] = leftBox[i].toUpperCase();
+		}
+		
+		for (var i = 0; i < rightBox.length; i++) {
+			rightBox[i] = rightBox[i].trim();
+			if (snapType == 1) rightBox[i] = rightBox[i].toUpperCase();
+		}
+		
+		for (var i = 0; i < leftBox.length; i++) {
+			
+			if (leftBox[i].length == 0) continue;
+	
+			if (rightBox.indexOf(leftBox[i]) >= 0) {
+				
+				if (middleArray.indexOf(leftBox[i]) < 0) {
+					middleArray.push(leftBox[i]);
+				}
+				
+			} else {
+				
+				if (leftArray.indexOf(leftBox[i]) < 0) {
+					leftArray.push(leftBox[i]);
+				}
+			}
+		}
+	
+		for (var i = 0; i < rightBox.length; i++) {
+			
+			if (rightBox[i].length == 0) continue;
+	
+			if (middleArray.indexOf(rightBox[i]) < 0) {
+				
+				if (rightArray.indexOf(rightBox[i]) < 0) {
+					rightArray.push(rightBox[i]);
+				}
+			}
+		}
+		
+		leftArray.sort();
+		middleArray.sort();
+		rightArray.sort();
+		
+		document.getElementById("statLeft").innerHTML = leftArray.length;
+		document.getElementById("statMiddle").innerHTML = middleArray.length;
+		document.getElementById("statRight").innerHTML = rightArray.length;
+		
+		document.getElementById("leftOutputArea").value = leftArray.join("\n");
+		document.getElementById("middleOutputArea").value = middleArray.join("\n");
+		document.getElementById("rightOutputArea").value = rightArray.join("\n");
+	}
+		
+	</script>
+</div>
+ 
 </body>
 </html></br>
